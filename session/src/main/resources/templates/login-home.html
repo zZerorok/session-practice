@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>로그인 성공</title>
+</head>
+<body>
+<div>
+    <h2>로그인 성공!!</h2>
+</div>
+
+<div>
+    <h4 th:text="|환영합니다: ${member.name}|">로그인 사용자 이름</h4>
+</div>
+
+<div>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">로그아웃</button>
+    </form>
+</div>
+</body>
+</html>
