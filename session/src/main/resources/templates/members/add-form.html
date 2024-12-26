@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 가입</title>
+</head>
+<body>
+<div>
+    <h2>회원 가입</h2>
+</div>
+
+<div>
+    <h4>회원 정보 입력</h4>
+</div>
+
+<div>
+    <form th:action="'/members/add'" th:object="${member}" method="post">
+        <div>
+            <label for="loginId">로그인 ID</label>
+            <input type="text" id="loginId" th:field="*{loginId}">
+            <span th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}"></span>
+        </div>
+        <div>
+            <label for="password">패스워드</label>
+            <input type="password" id="password" th:field="*{password}">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <div>
+            <button type="submit">회원 가입</button>
+            <button onclick="location.href='/'" type="button">취소</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
