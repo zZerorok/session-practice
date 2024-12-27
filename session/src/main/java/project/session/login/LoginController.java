@@ -1,7 +1,9 @@
 package project.session.login;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +49,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public String loginV2(@Valid @ModelAttribute LoginForm form,
                           BindingResult bindingResult,
                           HttpServletResponse response) {
@@ -63,6 +65,27 @@ public class LoginController {
         }
 
         sessionManager.createSession(loginMember, response);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/login")
+    public String loginV3(@Valid @ModelAttribute LoginForm form,
+                          BindingResult bindingResult,
+                          HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "login/login-form";
+        }
+
+        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
+
+        if (loginMember == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            return "login/login-form";
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("loginMember", loginMember);
 
         return "redirect:/";
     }

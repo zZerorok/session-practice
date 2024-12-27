@@ -1,6 +1,7 @@
 package project.session;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,7 @@ public class HomeController {
         return "login-home";
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String homeLoginV2(
             HttpServletRequest request,
             Model model
@@ -50,6 +51,25 @@ public class HomeController {
         }
 
         model.addAttribute("member", member);
+        return "login-home";
+    }
+
+    @GetMapping("/")
+    public String homeLoginV3(
+            HttpServletRequest request,
+            Model model
+    ) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return "home";
+        }
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return "home";
+        }
+
+        model.addAttribute("member", loginMember);
         return "login-home";
     }
 }
