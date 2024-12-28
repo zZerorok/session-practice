@@ -8,10 +8,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import project.session.member.Member;
 import project.session.session.SessionManager;
 
@@ -69,7 +71,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public String loginV3(@Valid @ModelAttribute LoginForm form,
                           BindingResult bindingResult,
                           HttpServletRequest request) {
@@ -87,6 +89,18 @@ public class LoginController {
         HttpSession session = request.getSession();
         session.setAttribute("loginMember", loginMember);
 
+        return "redirect:/";
+    }
+
+    @PostMapping("/login")
+    public String loginV3Spring(
+            @SessionAttribute(name = "loginMember", required = false) Member loginMember,
+            Model model) {
+        if (loginMember == null) {
+            return "home";
+        }
+
+        model.addAttribute("member", loginMember);
         return "redirect:/";
     }
 }

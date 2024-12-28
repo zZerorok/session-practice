@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import project.session.member.Member;
 import project.session.member.MemberRepository;
 import project.session.session.SessionManager;
@@ -54,7 +55,7 @@ public class HomeController {
         return "login-home";
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String homeLoginV3(
             HttpServletRequest request,
             Model model
@@ -65,6 +66,19 @@ public class HomeController {
         }
 
         Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return "home";
+        }
+
+        model.addAttribute("member", loginMember);
+        return "login-home";
+    }
+
+    @GetMapping("/")
+    public String homeLoginV3Spring(
+            @SessionAttribute(name = "loginMember", required = false) Member loginMember,
+            Model model
+    ) {
         if (loginMember == null) {
             return "home";
         }
